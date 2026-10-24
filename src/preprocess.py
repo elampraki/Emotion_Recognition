@@ -1,11 +1,16 @@
 import cv2
 import numpy as np
+from pathlib import Path
 
 # OpenCV face detector
-face_detector = cv2.CascadeClassifier(
-    "faceAndLandmarkModels/haarcascade_frontalface_default.xml"
+# Find the face detector from the project folder
+cascade_path = (
+    Path(__file__).resolve().parent.parent
+    / "faceAndLandmarkModels"
+    / "haarcascade_frontalface_default.xml"
 )
 
+face_detector = cv2.CascadeClassifier(str(cascade_path))
 def preprocess_kdef_image(
     image_path,
     output_size=(48, 48),
