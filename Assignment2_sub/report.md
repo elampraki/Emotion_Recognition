@@ -341,7 +341,7 @@ During the preparation of this work, we used ChatGPT (OpenAI) to review the work
 by AI tool usage: fuzzy_classifier.ipynb. After using both
 tools/services, Mateusz Wojcik s2528916, Efsathia Lampraki s2409445 and Amelia Skolimowska s20262129 evaluated the validity of the tool’s outputs, including the
 sources that generative AI tools have used, and edited the content as needed. As a
-consequence, Mateusz Wojcik s2528916 take(s) full responsibility for the content of their work.
+consequence, we take full responsibility for the content of their work.
 
 ## 10. References
 
