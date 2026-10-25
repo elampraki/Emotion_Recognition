@@ -2,19 +2,17 @@
 
 ## 1. Introduction
 
-In this project, we explored how machine learning can be used to recognize emotions from facial images. We worked with two datasets, FER2013 and KDEF, and compared different features and classification models.
+In this project, we trained machine learning models to recognize emotions when trained on face images. We worked with two datasets: FER2013 and KDEF. We tried different ways to extract the features and classify the emotions.
 
-We used three feature extraction methods: Histogram of Oriented Gradients (HOG), facial landmarks and Principal Component Analysis (PCA). For classification, we tested Logistic Regression, Support Vector Machine (SVM) and Random Forest.
-
-Our goal was to find which combinations worked best and see how well the models could recognize emotions from a different dataset.
+The comparison was between three methods: HOG, facial landmarks and PCA and we used three different classifiers: Logistic Regression, SVM and Random Forest. We also tested whether models trained on one dataset could work on the other.
 
 ## 2. Datasets
 
 ### 2.1 FER2013 [R1]
 
-FER2013 contains 35,887 grayscale images, each with a resolution of 48 × 48 pixels. The images are divided into seven emotions: Angry, Disgust, Fear, Happy, Sad, Surprise and Neutral.
+FER2013 contains 35,887 grayscale images and  each image has  a resolution of 48 × 48 pixels. The dataset contains 7 emotions: Angry, Disgust, Fear, Happy, Sad, Surprise and Neutral.
 
-The dataset was already divided into training, validation and test sets:
+The dataset was already divided into training, validation and testing:
 
 | Split | Images |
 |---|---:|
@@ -22,17 +20,17 @@ The dataset was already divided into training, validation and test sets:
 | Validation | 3,589 |
 | Test | 3,589 |
 
-For our experiments, we used a smaller sample of 999 training images and 301 validation images to reduce the execution time. We kept the full test set for evaluation.
+For our work, we used a smaller sample of 999 training images and 301 validation images in order to minimise the execution time. We used the full test set for evaluation.
 
-During data exploration, we noticed that the emotions were not equally represented. Happy had the most images in our training sample (251), while Disgust had only 15. This imbalance could affect how well the models learn to recognize less common emotions.
+During  the data exploration, we noticed that the emotions were not equally represented. Happy had the most images in our training sample with 251images, while Disgust had only 15. This is something that may affect how well the models learn to recognize less common emotions.
 
 ### 2.2 KDEF [R2]
 
-KDEF contains images of people showing seven different facial expressions. Unlike FER2013, the images were taken in controlled conditions and include different camera angles.
+KDEF contains images of people showing seven different facial expressions. Unlike FER2013, the images  include different camera angles.
 
-We started with 4,900 KDEF files. Two files did not follow the standard emotion-image naming format, so we excluded them. This left us with 4,898 images from 140 subjects.
+Initially we had 4,900 KDEF files. Two files did not follow the standard emotion-image naming format and for that reason we  did not include them. This left us with 4,898 images from 140 subjects.
 
-We divided the dataset into training, validation and test sets based on subject IDs, making sure images of the same person did not appear in different sets.
+We divided the dataset into training, validation and testing sets based on subject IDs. We made sure that pictures of the same person did not appear in different sets. Below is the samary table of each dataset:
 
 | Split | Images before preprocessing |
 |---|---:|
@@ -40,9 +38,9 @@ We divided the dataset into training, validation and test sets based on subject 
 | Validation | 805 |
 | Test | 980 |
 
-Before training, we used OpenCV's Haar Cascade detector to detect and crop faces. We then converted the images to grayscale, resized them to 48 × 48 pixels and prepared them for feature extraction.
+For preprocessing we used OpenCV's Haar Cascade detector to detect and crop faces.Then we converted the images to grayscale, resized them to 48 × 48 pixels and prepared them for feature extraction.
 
-However, the detector had difficulties with side-profile images. In the test set, 403 out of 980 images could not be processed, mainly full left and full right views.
+From the results we came to the conclusion that the detector couldn't recognise emotions in side-profile pictures. To be more precise in the test set, 403 out of 980 images could not be processed, (mostly full left and full right views).
 
 As a result, our KDEF test evaluation was based on 577 successfully processed images.
 
@@ -50,25 +48,21 @@ As a result, our KDEF test evaluation was based on 577 successfully processed im
 
 ### 3.1 Feature Extraction
 
-We tested three feature extraction methods:
+The feature extraction methods we explored were the following:
 
-**HOG:** This method captures edges and their directions in an image. It can help the model recognize changes in facial expressions, such as the shape of the mouth or eyebrows.
+**HOG(Histogram of Oriented Gradients):** because it captures the edges and shapes of facial features, such as the eyes, eyebrows and mouth. It can help the model recognize changes in facial expressions, such as the shape of the mouth or eyebrows.
 
-**Facial Landmarks:** We used dlib to extract 68 facial points, including points around the eyes, eyebrows, nose and mouth. Each point has an x and y coordinate, giving us 136 features per image.
+**Facial Landmarks:** We extracted 68 facial points (including points around the eyes, eyebrows, nose and mouth). Each point has an x and y coordinate which gave us 136 features per image.
 
-**PCA:** We used PCA to reduce the number of image features while keeping important information. For our experiments, we used 100 principal components.
+**PCA:** For the experiments we used 100 principal components.
 
 ### 3.2 Classification Models
 
-For each feature type, we trained three classifiers:
+For each feature type, we trained three classifiers: Logistic Regression, SVM and Random Forest
 
-- **Logistic Regression:** A relatively simple model used for classification.
-- **SVM:** A model that tries to separate different classes based on their features.
-- **Random Forest:** A model that combines predictions from several decision trees.
+This produced nine baseline combinations(HOG with Regression - HOG with SVM - HOG with Random Forest, Facial Landmarks with Regression etc.) for each dataset.
 
-This gave us nine baseline combinations for each dataset.
-
-We compared the models using accuracy, balanced accuracy and macro F1 score. We focused mainly on macro F1 because it gives equal importance to each emotion class, even when some classes have fewer images.
+We used accuracy, balanced accuracy and macro F1 score to compare the models and focused mainly on macro F1 because it considers both precision and recall and gives equal importance to each emotion class, even when some classes have fewer images
 
 ## 4. FER2013 Experiments
 
@@ -76,7 +70,7 @@ We compared the models using accuracy, balanced accuracy and macro F1 score. We 
 
 We trained all nine combinations using HOG, landmarks and PCA features.
 
-Landmarks with Logistic Regression achieved the highest validation macro F1 score (0.290), while HOG with SVM achieved the highest accuracy (39.5%).
+Landmarks with Logistic Regression achieved the highest validation macro F1 score (0.290), while HOG with SVM achieved the highest accuracy (39.5%). The table bellow povides details regarding the metrcis of each model.
 
 Some of the main results are shown below.
 
@@ -88,18 +82,18 @@ Some of the main results are shown below.
 | Landmarks + SVM | 37.9% | 0.260 |
 | PCA + RF | — | 0.180 |
 
-Overall, HOG and landmark features performed better than PCA in our experiments.
+From the results we can see that, HOG and landmark features performed better than PCA.
 
-The scores were still relatively low, showing that recognizing facial emotions is not an easy classification task, especially with a small training sample.
+The scores are still relatively low. This shows that  showing recognizing facial emotions is not easy, especially with a small training sample.
 
 ### 4.2 Creative Challenge
 
-For the creative challenge, we tried to improve Landmarks + Logistic Regression by making two changes:
+For the creative challenge, we tried to improve Landmarks with Logistic Regression. For that reason we did the following changes:
 
-1. Adding balanced class weights.
-2. Changing the regularization parameter.
+1. Added balanced class weights.
+2. Changed the regularization parameter.
 
-We tested each change separately and then combined them.
+We first tested each change separately and then by combining them.
 
 | Variation | Accuracy | Macro F1 |
 |---|---:|---:|
@@ -108,11 +102,13 @@ We tested each change separately and then combined them.
 | Parameter tuning | **42.2%** | **0.314** |
 | Both changes | 38.5% | 0.310 |
 
-Changing the regularization parameter gave the best results, increasing macro F1 from 0.290 to 0.314.
+- Best results came from changing the regularization method which increased macro F1 to 0.314.
 
-Adding class weights alone did not improve the model. Combining both changes also gave a slightly lower macro F1 than parameter tuning alone.
+- Adding class weights alone did not improve the model. 
 
-We therefore selected the tuned Landmarks + Logistic Regression model.
+- Combining both changes also gave a slightly lower macro F1 than parameter tuning alone.
+
+As a result we selected the tuned Landmarks + Logistic Regression model.
 
 ### 4.3 Final Test Results
 
@@ -124,11 +120,11 @@ We evaluated the selected model on the FER2013 test set containing 3,589 images.
 | Balanced accuracy | 33.27% | 31.51% |
 | Macro F1 | 0.314 | 0.308 |
 
-The model performed best on Happy (F1 = 0.61) and Surprise (F1 = 0.44). It struggled most with Disgust (F1 = 0.03) and Fear (F1 = 0.18).
+The model performed best on Happy with F1 = 0.61 and Surprise where F1 = 0.44. It struggled most with Disgust with F1 = 0.03 and Fear with F1 = 0.18.
 
 ### 4.4 Error Analysis
 
-We looked at misclassified images to understand the model's mistakes.
+For the error analysis we looked at misclassified images to understand the model's mistakes.
 
 The most common errors were:
 
@@ -140,11 +136,11 @@ The most common errors were:
 | Neutral | Sad | 122 |
 | Angry | Happy | 111 |
 
-These results suggest that facial landmarks alone may not capture enough information to distinguish between some expressions.
+These results show that facial landmarks alone may not capture enough information to identify specific expressions.
 
-For example, subtle changes in the face might be difficult to recognize using only the positions of facial points.
+For example, slightly changes in the face expressions might be difficult for the model to recognize using only the positions of facial points.
 
-The small training sample and the class imbalance may also have affected the results.
+The small training sample and the imbalance of the face expressions in the class may also have affected the results.
 
 ## 5. KDEF Experiments
 
@@ -152,7 +148,7 @@ The small training sample and the class imbalance may also have affected the res
 
 We followed the same approach using KDEF, testing all nine combinations of features and classifiers.
 
-The best model was HOG with SVM, which achieved 61.0% validation accuracy and 0.599 macro F1.
+The best model was HOG with SVM, which achieved 61.0% accuracy and 0.599 macro F1.
 
 | Model | Accuracy | Macro F1 |
 |---|---:|---:|
@@ -170,7 +166,7 @@ HOG and PCA performed better than facial landmarks on KDEF. This may be because 
 
 ### 5.2 KDEF Test Results
 
-We evaluated HOG + SVM on the held-out KDEF test subjects.
+We evaluated HOG + SVM on the held - out KDEF test data.
 
 | Metric | Validation | Test |
 |---|---:|---:|
@@ -180,9 +176,9 @@ We evaluated HOG + SVM on the held-out KDEF test subjects.
 
 The results were very close between validation and test.
 
-The model performed best on Happy (F1 = 0.85) and Disgust (F1 = 0.74). Fear (F1 = 0.36) and Sad (F1 = 0.42) were the most difficult.
+The model performed best on Happy with F1 = 0.85 and Disgust with F1 = 0.74. Fear with F1 = 0.36 and Sad with F1 = 0.42 were the most difficult.
 
-However, these test results only include 577 images because many side-profile images could not be processed by the face detector.
+However, these test results only include 577 images because again many side-profile images could not be processed by the face detector.
 
 ### 5.3 Cross-Dataset Evaluation
 
@@ -190,7 +186,7 @@ We also tested whether models trained on one dataset could recognize emotions in
 
 We evaluated three feature–classifier combinations in both directions.
 
-| Model | KDEF → FER2013 F1 | FER2013 → KDEF F1 |
+| Model | KDEF to FER2013 F1 | FER2013 to KDEF F1 |
 |---|---:|---:|
 | HOG + SVM | 0.169 | 0.153 |
 | Landmarks + LR | **0.219** | **0.180** |
@@ -198,11 +194,11 @@ We evaluated three feature–classifier combinations in both directions.
 
 The results were much lower than when the models were evaluated on their original datasets.
 
-Landmarks with Logistic Regression performed best in both transfer directions, although its scores were still low.
+Landmarks with Logistic Regression performed best in both cases, although the scores were still low.
 
 One possible reason is the difference between the datasets. KDEF contains posed expressions in controlled conditions, while FER2013 contains more varied images.
 
-Differences in image cropping, lighting and facial expressions may also explain why the models struggled to generalize.
+Another reason why models struggle to generalize could the differences in image cropping, lighting and facial expressions.
 
 These experiments show that a model performing well on one dataset does not necessarily perform well on another.
 
@@ -210,8 +206,8 @@ These experiments show that a model performing well on one dataset does not nece
 
 We tried to improve KDEF's best baseline, HOG + SVM, by changing two settings:
 
-1. Adding balanced class weights.
-2. Increasing the SVM parameter C from 1.0 to 3.0.
+1. Added balanced class weights.
+2. Increased the SVM parameter C from 1.0 to 3.0.
 
 We tested both changes separately and together.
 
@@ -222,15 +218,17 @@ We tested both changes separately and together.
 | Tune C | **65.4%** | **65.3%** | **0.645** |
 | Both changes | **65.4%** | **65.3%** | **0.645** |
 
-Increasing C gave the biggest improvement, raising macro F1 from 0.599 to 0.645.
+- Increasing C gave the biggest improvement, raising macro F1 to 0.645.
 
-Adding class weights also improved the results slightly, but combining both changes did not improve the scores further.
+- Adding class weights also improved the results slightly
+
+- Combining both changes though, did not improve the scores further.
 
 We selected HOG + SVM with C = 3.0 as our best creative-challenge model.
 
 ### 5.5 Error Analysis
 
-We examined some images that the tuned model classified incorrectly.
+For the error analysis here we examined some images that the tuned model classified incorrectly.
 
 The most common mistakes were:
 
@@ -244,7 +242,7 @@ The most common mistakes were:
 
 These mistakes suggest that some emotions have similar visual features.
 
-For example, Fear and Surprise can both involve raised eyebrows and an open mouth, which might make them harder to distinguish.
+For example, Fear and Surprise can both involve raised eyebrows and an open mouth, which might make them harder to identify.
 
 Although tuning improved the overall performance, the model still made mistakes between several emotion classes.
 
@@ -262,7 +260,19 @@ The fuzzy classifier was trained on the KDEF dataset mentioned in the ealier sec
 | smile_ratio | corners above the mouth centre divided by mouth width|
 |lip_raise |nose tip to upper lip|
 
-All of these features were made from landmarks as well as support intermediate step such as eyes locations and their width. All of the features are divided by the distance between the eyes as to make the face size and distance from the camera irrelevant. The model is a Takagi-Sugeno model using pyFUME library. It first uses fuzzy c-means clustering, then Gaussian membership functions and lastly a linear output per rule. The structure of the models is one-vs-rest, meaning that all 7 emotion have their own model, each with 3 rules, and the emotion with the highest output value wins. The results on the given split are:
+- All of these features were made from landmarks as well as support intermediate step such as eyes locations and their width. 
+
+- All of the features are divided by the distance between the eyes as to make the face size and distance from the camera irrelevant. 
+
+- The model is a Takagi-Sugeno model using pyFUME library:
+
+1. It first uses fuzzy c-means clustering
+2. then Gaussian membership functions 
+3. and lastly a linear output per rule. 
+
+The structure of the models is one-vs-rest. That means that all 7 emotion have their own model, each with 3 rules, and the emotion with the highest output value wins. 
+
+The results on the given split are:
 
 | Metric | Value | 
 |---|---|
@@ -270,7 +280,15 @@ All of these features were made from landmarks as well as support intermediate s
 | balanced_accuracy | 0.68 |
 | macro f1 | 0.65 |
 
-Overall performance of the human-understandble rules seems to be mixed. On one side, Happy emotion has a visibly highest smile_ratio, and the widest mouth, which matches the intuition. This is also the case for Surprise emotion (which has the highest value for open_mouth and brow_height), Disgust (smallest lip_raise) and Angry (lowest eyebrows). On the other hand, the Fear is often predicted as a surprise because both have an open mouth and eyes with raised eyebrows leading to misclassification. A similar situation is with Sad and Neutral which get mixed up because of closed mouth. Therefore these 6 human-understandble features perform well on some emotions and fail on others. This is consistent with our expectations as more features would be needed to properly distinguish each emotion.
+Overall performance of the human-understandble rules seems to be mixed. On one side, Happy emotion has a visibly highest smile_ratio, and the widest mouth, which matches the intuition. 
+
+This is also the case for Surprise emotion (which has the highest value for open_mouth and brow_height), Disgust (smallest lip_raise) and Angry (lowest eyebrows). 
+
+On the other hand, the Fear is often predicted as a surprise because both have an open mouth and eyes with raised eyebrows leading to misclassification. 
+
+A similar situation is with Sad and Neutral which get mixed up because of closed mouth. Therefore these 6 human-understandble features perform well on some emotions and fail on others. 
+
+This is consistent with our expectations as more features would be needed to properly distinguish each emotion.
 
 ### 6.2 Real time demo
 
@@ -282,25 +300,24 @@ Overall changing the model did work. Happy and Surprise emotions performed the b
 
 Our experiments showed that the best feature extraction method depends on the dataset.
 
-For FER2013, facial landmarks with Logistic Regression gave the highest baseline macro F1. For KDEF, HOG with SVM performed best.
+For FER2013, facial landmarks with Logistic Regression gave the highest baseline macro F1. 
+
+For KDEF, HOG with SVM performed best.
 
 The fuzzy classifier showed that only six simple geometric features can reach almost 68% accuracy on the KDEF dataset. Some emotions were recognized better than others.
 
-We also found that parameter tuning improved both selected models.
+We also found that parameter tuning improved both selected models. However, there were several limitations.
 
-However, there were several limitations.
-
-First, we only used a small sample of the FER2013 training data, which may have limited model performance.
+First, as mentioned we only used a small sample of the FER2013 training data, which may have limited model performance.
 
 Second, KDEF preprocessing was not successful for all camera angles. Many full side-profile images were excluded because the face detector could not detect them.
 
 Finally, the cross-dataset experiments showed a large drop in performance. This suggests that our models were sensitive to differences between the two datasets.
 
-We had also examined test results during earlier experiments before all model comparisons were finalized. Because of this, the later test evaluations should not be considered completely independent of the development process.
 
 ## 8. Conclusion
 
-In this project, we compared different machine-learning methods for facial emotion recognition using FER2013 and KDEF.
+In this project, we compared different machine-learning methods for facial emotion recognition using FER2013 and KDEF datasets.
 
 For FER2013, the best validation results came from facial landmarks with tuned Logistic Regression, reaching a macro F1 of 0.314.
 
@@ -314,7 +331,10 @@ The real time demo works with the new model, although predicts well only Happy a
 
 Overall, we found that feature extraction and model settings affect performance, but recognizing facial emotions reliably remains challenging.
 
-For future work, we could use more training images, improve face detection for side views, and test data augmentation or more advanced models to improve generalization.
+For future work, we could:
+1.  use more training images, 
+2. improve face detection for side views, 
+3. and test data augmentation or more advanced models to improve generalization.
 
 ## 9. AI Statement
 During the preparation of this work, we used ChatGPT (OpenAI) to review the work, clarify assignment requirements that were not clear, help organize the workflow, and assist with debugging errors during implementation as well reviewing the code when needed. The following parts of the assignment were affected by AI tool usage: Phase_A_FER2013_Experiments. As a consequence, I take full responsibility for the content of my work.Also CLAUDE was used in order to help with the landmark to feature conversion for fuzzy classifier. The following parts of the assignment were affected
