@@ -317,9 +317,9 @@ Overall, we found that feature extraction and model settings affect performance,
 For future work, we could use more training images, improve face detection for side views, and test data augmentation or more advanced models to improve generalization.
 
 ## 9. AI Statement
-During the preparation of this work, I used CLAUDE in order to help with the landmark to feature conversion for fuzzy classifier. The following parts of the assignment were affected
-by AI tool usage: fuzzy_classifier.ipynb. After using this
-tool/service, Mateusz Wojcik s2528916 evaluated the validity of the tool’s outputs, including the
+During the preparation of this work, we used ChatGPT (OpenAI) to review the work, clarify assignment requirements that were not clear, help organize the workflow, and assist with debugging errors during implementation as well reviewing the code when needed. The following parts of the assignment were affected by AI tool usage: Phase_A_FER2013_Experiments. As a consequence, I take full responsibility for the content of my work.Also CLAUDE was used in order to help with the landmark to feature conversion for fuzzy classifier. The following parts of the assignment were affected
+by AI tool usage: fuzzy_classifier.ipynb. After using both
+tools/services, Mateusz Wojcik s2528916, Efsathia Lampraki s2409445 and Amelia Skolimowska s20262129 evaluated the validity of the tool’s outputs, including the
 sources that generative AI tools have used, and edited the content as needed. As a
 consequence, Mateusz Wojcik s2528916 take(s) full responsibility for the content of their work.
 
